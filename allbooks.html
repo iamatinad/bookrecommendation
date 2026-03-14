@@ -1,0 +1,829 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>The American Center x Danita Lamptey | Tech & Business Recommendations</title>
+    <!-- Book Favicon Icon -->
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>📖</text></svg>">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;700;800&display=swap" rel="stylesheet" />
+    <style>
+      :root {
+        --bg: #050505;
+        --card-bg: #111111;
+        --us-blue: #002868;
+        --gh-gold: #ffcd00;
+        --gh-green: #009b77;
+        --us-red: #BF0A30;
+        --text-main: #ffffff;
+        --text-dim: #a0a0a0;
+        --accent-gradient: linear-gradient(135deg, #ffcd00 0%, #009b77 50%, #002868 100%);
+      }
+
+      * { margin: 0; padding: 0; box-sizing: border-box; }
+
+      body {
+        font-family: "Inter", sans-serif;
+        background-color: var(--bg);
+        color: var(--text-main);
+        line-height: 1.6;
+        overflow-x: hidden;
+      }
+
+      /* Ambient Glows */
+      .glow {
+        position: fixed;
+        width: 400px;
+        height: 400px;
+        border-radius: 50%;
+        filter: blur(120px);
+        z-index: -1;
+        opacity: 0.15;
+      }
+      .glow-1 { top: -100px; left: -100px; background: var(--gh-gold); }
+      .glow-2 { bottom: -100px; right: -100px; background: var(--us-blue); }
+
+      .container { max-width: 1300px; margin: 0 auto; padding: 0 24px; }
+
+      header { padding: 100px 0 60px; }
+      .recommender-tag {
+        font-size: 0.9rem;
+        text-transform: uppercase;
+        letter-spacing: 3px;
+        color: var(--gh-gold);
+        margin-bottom: 20px;
+        display: block;
+      }
+
+      h1 {
+        font-size: clamp(2.5rem, 8vw, 5rem);
+        font-weight: 800;
+        line-height: 0.9;
+        margin-bottom: 40px;
+        letter-spacing: -2px;
+      }
+
+      .intro-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 60px;
+        margin-bottom: 80px;
+      }
+
+      .intro-text {
+        font-size: 1.2rem;
+        color: var(--text-dim);
+        max-width: 500px;
+      }
+
+      .highlight-bar {
+        height: 4px;
+        width: 100px;
+        background: var(--accent-gradient);
+        margin-bottom: 30px;
+      }
+
+      .section-group { margin-bottom: 100px; }
+
+      .section-title {
+        font-size: 0.8rem;
+        text-transform: uppercase;
+        letter-spacing: 4px;
+        color: var(--text-dim);
+        margin-bottom: 30px;
+        display: flex;
+        align-items: center;
+        gap: 15px;
+      }
+      .section-title::after {
+        content: "";
+        height: 1px;
+        background: #333;
+        flex-grow: 1;
+      }
+
+      .book-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+        gap: 40px;
+      }
+
+      .book-card {
+        background: var(--card-bg);
+        border: 1px solid #222;
+        padding: 20px;
+        border-radius: 0px;
+        text-decoration: none;
+        color: inherit;
+        transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+        display: flex;
+        flex-direction: column;
+        min-height: 620px;
+        position: relative;
+        overflow: hidden;
+      }
+
+      .image-wrapper {
+        width: 100%;
+        height: 400px;
+        background: #080808;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-bottom: 25px;
+        padding: 15px;
+      }
+
+      .book-cover {
+        max-width: 100%;
+        max-height: 100%;
+        object-fit: contain;
+        filter: grayscale(20%);
+        transition: all 0.4s ease;
+        box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5);
+      }
+
+      .book-card:hover {
+        transform: translateY(-12px);
+        border-color: var(--gh-gold);
+        box-shadow: 0 20px 40px rgba(0, 0, 0, 0.6);
+      }
+
+      .book-card:hover .book-cover {
+        filter: grayscale(0%);
+        transform: scale(1.04);
+      }
+
+      .book-content {
+        position: relative;
+        z-index: 1;
+        flex-grow: 1;
+        display: flex;
+        flex-direction: column;
+      }
+
+      .book-category {
+        font-size: 0.65rem;
+        color: var(--gh-gold);
+        margin-bottom: 12px;
+        font-weight: 700;
+        letter-spacing: 1.5px;
+      }
+
+      .book-name {
+        font-size: 1.4rem;
+        font-weight: 700;
+        line-height: 1.2;
+        margin-bottom: 8px;
+      }
+
+      .book-author {
+        color: var(--text-dim);
+        font-size: 0.8rem;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        margin-bottom: 10px;
+      }
+
+      .book-description {
+        font-size: 0.85rem;
+        color: #888;
+        margin-bottom: 20px;
+        line-height: 1.4;
+      }
+
+      .arrow {
+        margin-top: auto;
+        font-size: 1.5rem;
+        transition: transform 0.3s;
+      }
+
+      .book-card:hover .arrow {
+        transform: translateX(10px);
+        color: var(--gh-gold);
+      }
+
+      .bibliography {
+        background: #0a0a0a;
+        padding: 60px 24px;
+        margin-top: 100px;
+        border-top: 1px solid #222;
+      }
+
+      .bib-content {
+        max-width: 900px;
+        margin: 0 auto;
+        font-size: 0.8rem;
+        color: #666;
+        column-count: 2;
+        column-gap: 40px;
+      }
+
+      .bib-content p { margin-bottom: 10px; text-indent: -20px; padding-left: 20px; }
+
+      footer {
+        padding: 60px 0;
+        text-align: center;
+      }
+
+      .footer-link {
+        color: var(--text-main);
+        text-decoration: none;
+        font-weight: 700;
+        font-size: 1.2rem;
+        border-bottom: 2px solid var(--gh-gold);
+        padding-bottom: 5px;
+        transition: 0.3s;
+      }
+
+      @media (max-width: 768px) {
+        .intro-grid { grid-template-columns: 1fr; gap: 30px; }
+        h1 { font-size: 3rem; }
+        .book-grid { grid-template-columns: 1fr; }
+        .image-wrapper { height: 320px; }
+        .book-card { min-height: auto; }
+        .bib-content { column-count: 1; }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="glow glow-1"></div>
+    <div class="glow glow-2"></div>
+
+    <div class="container">
+      <header>
+        <span class="recommender-tag">Curated by Danita Lamptey</span>
+        <h1>Knowledge.<br />Future.<br />Impact.</h1>
+
+        <div class="intro-grid">
+          <div class="highlight-bar"></div>
+          <p class="intro-text">
+This recommended collection gives you the data to win, the in-demand skills to build, and the mindset to scale any business.
+          </p>
+        </div>
+      </header>
+
+      <!-- 01. AFRICA-CENTRIC CONTEXT (PRIORITY) -->
+      <div class="section-group">
+        <h2 class="section-title" style="color: var(--gh-green)">01. Africa-Centric Priority (Strategic)</h2>
+        <div class="book-grid">
+          <a href="https://www.amazon.com/Dragons-Gift-Real-Story-Africa/dp/0199606296" target="_blank" class="book-card" style="border-color: var(--gh-green)">
+            <div class="image-wrapper"><img src="/covers/dragonsgift.jpg" class="book-cover" alt="The Dragon's Gift" /></div>
+            <div class="book-content">
+              <div class="book-category">2011 • POLICY</div>
+              <div class="book-name">The Dragon’s Gift</div>
+              <div class="book-author">Deborah Brautigam</div>
+              <div class="book-description">A deep analysis of China's business and policy impact on the African continent.</div>
+              <div class="arrow">→</div>
+            </div>
+          </a>
+          <a href="https://link.springer.com/book/10.1007/978-1-137-57878-5" target="_blank" class="book-card" style="border-color: var(--gh-green)">
+            <div class="image-wrapper"><img src="/covers/26.jpg" class="book-cover" alt="Digital Kenya" /></div>
+            <div class="book-content">
+              <div class="book-category">2016 • ECOSYSTEMS</div>
+              <div class="book-name">Digital Kenya</div>
+              <div class="book-author">Bitange Ndemo et al.</div>
+              <div class="book-description">The ultimate blueprint for tech hub growth and innovation in African markets.</div>
+              <div class="arrow">→</div>
+            </div>
+          </a>
+          <a href="https://www.howwemadeitinafrica.com/book/" target="_blank" class="book-card" style="border-color: var(--gh-green)">
+            <div class="image-wrapper"><img src="/covers/25.jpg" class="book-cover" alt="Made in Africa" /></div>
+            <div class="book-content">
+              <div class="book-category">2018 • ENTREPRENEURSHIP</div>
+              <div class="book-name">How We Made It in Africa</div>
+              <div class="book-author">Jaco Maritz</div>
+              <div class="book-description">Founder stories and patterns that apply specifically to the local context.</div>
+              <div class="arrow">→</div>
+            </div>
+          </a>
+          <a href="https://www.mckinsey.com/featured-insights/middle-east-and-africa/africas-business-revolution" target="_blank" class="book-card" style="border-color: var(--gh-green)">
+            <div class="image-wrapper"><img src="/covers/27.jpg" class="book-cover" alt="Revolution" /></div>
+            <div class="book-content">
+              <div class="book-category">2018 • MARKETS</div>
+              <div class="book-name">Africa’s Business Revolution</div>
+              <div class="book-author">Leke, Chironga, et al.</div>
+              <div class="book-description">Grounded view of African markets and growth opportunities for leaders.</div>
+              <div class="arrow">→</div>
+            </div>
+          </a>
+          <a href="https://www.brookings.edu/book/unlocking-africas-business-potential/" target="_blank" class="book-card" style="border-color: var(--gh-green)">
+            <div class="image-wrapper"><img src="/covers/unlockingafrica.jpg" class="book-cover" alt="Unlocking Potential" /></div>
+            <div class="book-content">
+              <div class="book-category">2020 • STRATEGY</div>
+              <div class="book-name">Unlocking Africa’s Business Potential</div>
+              <div class="book-author">Landry Signé</div>
+              <div class="book-description">Strategic roadmap for navigating the African economic engine.</div>
+              <div class="arrow">→</div>
+            </div>
+          </a>
+        </div>
+      </div>
+
+      <!-- 02. MEMOIRS & FOUNDER STORIES -->
+      <div class="section-group">
+        <h2 class="section-title">02. Memoirs & Founder Narratives</h2>
+        <div class="book-grid">
+          <a href="#" target="_blank" class="book-card">
+            <div class="image-wrapper"><img src="/covers/35.jpg" class="book-cover" alt="Shark Tales" /></div>
+            <div class="book-content">
+              <div class="book-category">2011 • WOMEN IN BUSINESS</div>
+              <div class="book-name">Shark Tales</div>
+              <div class="book-author">Barbara Corcoran</div>
+              <div class="book-description">How a $1,000 failure became a billion-dollar real estate empire.</div>
+              <div class="arrow">→</div>
+            </div>
+          </a>
+          <a href="#" target="_blank" class="book-card">
+            <div class="image-wrapper"><img src="/covers/shoedog.jpg" class="book-cover" alt="Shoe Dog" /></div>
+            <div class="book-content">
+              <div class="book-category">2016 • RESILIENCE</div>
+              <div class="book-name">Shoe Dog</div>
+              <div class="book-author">Phil Knight</div>
+              <div class="book-description">The candid story of Nike's struggle and ultimate success.</div>
+              <div class="arrow">→</div>
+            </div>
+          </a>
+          <a href="#" target="_blank" class="book-card" style="border-color: var(--gh-green)">
+            <div class="image-wrapper"><img src="/covers/africarise.jpg" class="book-cover" alt="Rise Shine" /></div>
+            <div class="book-content">
+              <div class="book-category">2017 • NIGERIA</div>
+              <div class="book-name">Africa Rise And Shine</div>
+              <div class="book-author">Jim Ovia</div>
+              <div class="book-description">How a Nigerian entrepreneur built a $16 billion business from humble beginnings.</div>
+              <div class="arrow">→</div>
+            </div>
+          </a>
+          <a href="#" target="_blank" class="book-card" style="border-color: var(--gh-green)">
+            <div class="image-wrapper"><img src="/covers/34.webp" class="book-cover" alt="Tarmac" /></div>
+            <div class="book-content">
+              <div class="book-category">2021 • SCALE</div>
+              <div class="book-name">Leaving the Tarmac</div>
+              <div class="book-author">Aigboje Aig-Imoukhuede</div>
+              <div class="book-description">The true story of building a world-class financial institution in Africa.</div>
+              <div class="arrow">→</div>
+            </div>
+          </a>
+          <a href="#" target="_blank" class="book-card">
+            <div class="image-wrapper"><img src="/covers/7.jpg" class="book-cover" alt="Musk" /></div>
+            <div class="book-content">
+              <div class="book-category">2023 • BIOGRAPHY</div>
+              <div class="book-name">Elon Musk</div>
+              <div class="book-author">Walter Isaacson</div>
+              <div class="book-description">An intimate look at the innovator behind Tesla, SpaceX, and X.</div>
+              <div class="arrow">→</div>
+            </div>
+          </a>
+          <a href="#" target="_blank" class="book-card" style="border-color: var(--gh-gold)">
+            <div class="image-wrapper"><img src="/covers/36.jpg" class="book-cover" alt="Shoemaker" /></div>
+            <div class="book-content">
+              <div class="book-category">2024 • GHANA</div>
+              <div class="book-name">The Shoemakergurl</div>
+              <div class="book-author">Edna Frimpong</div>
+              <div class="book-description">A walk through a world dominated by men; the determination to dream big.</div>
+              <div class="arrow">→</div>
+            </div>
+          </a>
+          <a href="#" target="_blank" class="book-card">
+            <div class="image-wrapper"><img src="/covers/6.jpeg" class="book-cover" alt="Gates" /></div>
+            <div class="book-content">
+              <div class="book-category">2025 • MEMOIR</div>
+              <div class="book-name">Source Code</div>
+              <div class="book-author">Bill Gates</div>
+              <div class="book-description">The early years and the logic that built the modern world.</div>
+              <div class="arrow">→</div>
+            </div>
+          </a>
+        </div>
+      </div>
+
+      <!-- 03. DIGITAL FOUNDATIONS -->
+      <div class="section-group">
+        <h2 class="section-title">03. Digital Foundations & Strategy</h2>
+        <div class="book-grid">
+          <a href="#" class="book-card" target="_blank">
+            <div class="image-wrapper"><img src="/covers/2.jpeg" class="book-cover" alt="Code" /></div>
+            <div class="book-content">
+              <div class="book-category">1999 • LOGIC</div>
+              <div class="book-name">Code</div>
+              <div class="book-author">Charles Petzold</div>
+              <div class="book-description">The hidden language of hardware and software level.</div>
+              <div class="arrow">→</div>
+            </div>
+          </a>
+          <a href="#" target="_blank" class="book-card">
+            <div class="image-wrapper"><img src="/covers/3.jpg" class="book-cover" alt="Innovators" /></div>
+            <div class="book-content">
+              <div class="book-category">2014 • HISTORY</div>
+              <div class="book-name">The Innovators</div>
+              <div class="book-author">Walter Isaacson</div>
+              <div class="book-description">The story of how modern computing was built.</div>
+              <div class="arrow">→</div>
+            </div>
+          </a>
+          <a href="#" target="_blank" class="book-card">
+            <div class="image-wrapper"><img src="/covers/4.jpg" class="book-cover" alt="Inevitable" /></div>
+            <div class="book-content">
+              <div class="book-category">2016 • FUTURISM</div>
+              <div class="book-name">The Inevitable</div>
+              <div class="book-author">Kevin Kelly</div>
+              <div class="book-description">Forces shaping tech and work in the coming years.</div>
+              <div class="arrow">→</div>
+            </div>
+          </a>
+          <a href="#" target="_blank" class="book-card">
+            <div class="image-wrapper"><img src="/covers/1.jpg" class="book-cover" alt="Digital World" /></div>
+            <div class="book-content">
+              <div class="book-category">2017 • LITERACY</div>
+              <div class="book-name">Understanding the Digital World</div>
+              <div class="book-author">Brian Kernighan</div>
+              <div class="book-description">Plain-English guide to computers and how they work.</div>
+              <div class="arrow">→</div>
+            </div>
+          </a>
+        </div>
+      </div>
+
+      <!-- 04. DEVELOPER TOOLKIT & SKILLS -->
+      <div class="section-group">
+        <h2 class="section-title">04. Developer Toolkit & Roadmap</h2>
+        <div class="book-grid">
+          <a href="#" target="_blank" class="book-card">
+            <div class="image-wrapper"><img src="/covers/12.jpg" class="book-cover" alt="HTML" /></div>
+            <div class="book-content">
+              <div class="book-category">2011 • WEB</div>
+              <div class="book-name">HTML and CSS</div>
+              <div class="book-author">Jon Duckett</div>
+              <div class="book-description">The visual guide to building websites.</div>
+              <div class="arrow">→</div>
+            </div>
+          </a>
+          <a href="#" target="_blank" class="book-card">
+            <div class="image-wrapper"><img src="/covers/8.jpg" class="book-cover" alt="Newport" /></div>
+            <div class="book-content">
+              <div class="book-category">2012 • CAREERS</div>
+              <div class="book-name">So Good They Can’t Ignore You</div>
+              <div class="book-author">Cal Newport</div>
+              <div class="book-description">Skill-first approach to building a strong career.</div>
+              <div class="arrow">→</div>
+            </div>
+          </a>
+          <a href="#" target="_blank" class="book-card">
+            <div class="image-wrapper"><img src="/covers/13.webp" class="book-cover" alt="Myers" /></div>
+            <div class="book-content">
+              <div class="book-category">2014 • DRILLS</div>
+              <div class="book-name">A Smarter Way to Learn JavaScript</div>
+              <div class="book-author">Mark Myers</div>
+              <div class="book-description">Drill-based learning to make logic stick.</div>
+              <div class="arrow">→</div>
+            </div>
+          </a>
+          <a href="#" target="_blank" class="book-card">
+            <div class="image-wrapper"><img src="/covers/17.jpg" class="book-cover" alt="Work" /></div>
+            <div class="book-content">
+              <div class="book-category">2014 • DISCOVERY</div>
+              <div class="book-name">Show Your Work!</div>
+              <div class="book-author">Austin Kleon</div>
+              <div class="book-description">Sharing your journey as a tech builder.</div>
+              <div class="arrow">→</div>
+            </div>
+          </a>
+          <a href="#" target="_blank" class="book-card">
+            <div class="image-wrapper"><img src="/covers/10.webp" class="book-cover" alt="Python" /></div>
+            <div class="book-content">
+              <div class="book-category">2015 • PYTHON</div>
+              <div class="book-name">Automate the Boring Stuff</div>
+              <div class="book-author">Al Sweigart</div>
+              <div class="book-description">Practical Python projects for productivity.</div>
+              <div class="arrow">→</div>
+            </div>
+          </a>
+          <a href="#" target="_blank" class="book-card">
+            <div class="image-wrapper"><img src="/covers/crackingcoding.jpg" class="book-cover" alt="Cracking" /></div>
+            <div class="book-content">
+              <div class="book-category">2015 • INTERVIEWS</div>
+              <div class="book-name">Cracking the Coding Interview</div>
+              <div class="book-author">Gayle McDowell</div>
+              <div class="book-description">The definitive technical interview prep guide.</div>
+              <div class="arrow">→</div>
+            </div>
+          </a>
+          <a href="#" target="_blank" class="book-card">
+            <div class="image-wrapper"><img src="/covers/11.jpg" class="book-cover" alt="Eloquent" /></div>
+            <div class="book-content">
+              <div class="book-category">2018 • MASTERY</div>
+              <div class="book-name">Eloquent JavaScript</div>
+              <div class="book-author">Marijn Haverbeke</div>
+              <div class="book-description">Modern introduction to programming and web architecture.</div>
+              <div class="arrow">→</div>
+            </div>
+          </a>
+          <a href="#" target="_blank" class="book-card">
+            <div class="image-wrapper"><img src="/covers/9.jpg" class="book-cover" alt="Habits" /></div>
+            <div class="book-content">
+              <div class="book-category">2018 • SYSTEMS</div>
+              <div class="book-name">Atomic Habits</div>
+              <div class="book-author">James Clear</div>
+              <div class="book-description">Practical habits for consistent skill building.</div>
+              <div class="arrow">→</div>
+            </div>
+          </a>
+        </div>
+      </div>
+
+      <!-- 05. AI & FUTURE SYSTEMS -->
+      <div class="section-group">
+        <h2 class="section-title">05. AI, Systems & Design Thinking</h2>
+        <div class="book-grid">
+          <a href="#" target="_blank" class="book-card">
+            <div class="image-wrapper"><img src="/covers/15.webp" class="book-cover" alt="Phoenix" /></div>
+            <div class="book-content">
+              <div class="book-category">2013 • SYSTEMS</div>
+              <div class="book-name">The Phoenix Project</div>
+              <div class="book-author">Gene Kim et al.</div>
+              <div class="book-description">IT, DevOps, and helping your business win.</div>
+              <div class="arrow">→</div>
+            </div>
+          </a>
+          <a href="#" target="_blank" class="book-card">
+            <div class="image-wrapper"><img src="/covers/14.webp" class="book-cover" alt="Data" /></div>
+            <div class="book-content">
+              <div class="book-category">2015 • ANALYTICS</div>
+              <div class="book-name">Storytelling with Data</div>
+              <div class="book-author">Cole Knaflic</div>
+              <div class="book-description">Making clear charts that drive decisions.</div>
+              <div class="arrow">→</div>
+            </div>
+          </a>
+          <a href="#" target="_blank" class="book-card">
+            <div class="image-wrapper"><img src="/covers/22.jpeg" class="book-cover" alt="Cyber" /></div>
+            <div class="book-content">
+              <div class="book-category">2020 • SECURITY</div>
+              <div class="book-name">Confident Cyber Security</div>
+              <div class="book-author">Dr. Jessica Barker</div>
+              <div class="book-description">Protecting yourself in the digital age.</div>
+              <div class="arrow">→</div>
+            </div>
+          </a>
+          <a href="#" target="_blank" class="book-card">
+            <div class="image-wrapper"><img src="/covers/19.jpg" class="book-cover" alt="UX" /></div>
+            <div class="book-content">
+              <div class="book-category">2022 • DESIGN</div>
+              <div class="book-name">Practical UI</div>
+              <div class="book-author">Adham Dannaway</div>
+              <div class="book-description">Logic-driven design for intuitive digital interfaces.</div>
+              <div class="arrow">→</div>
+            </div>
+          </a>
+          <a href="#" target="_blank" class="book-card">
+            <div class="image-wrapper"><img src="/covers/18.jpg" class="book-cover" alt="I Human" /></div>
+            <div class="book-content">
+              <div class="book-category">2023 • AI PSYCHOLOGY</div>
+              <div class="book-name">I, Human</div>
+              <div class="book-author">Tomas Chamorro-Premuzic</div>
+              <div class="book-description">Staying relevant and unique in the age of automation.</div>
+              <div class="arrow">→</div>
+            </div>
+          </a>
+          <a href="#" target="_blank" class="book-card">
+            <div class="image-wrapper"><img src="/covers/5.jpg" class="book-cover" alt="Glitch" /></div>
+            <div class="book-content">
+              <div class="book-category">2023 • ETHICS</div>
+              <div class="book-name">More Than a Glitch</div>
+              <div class="book-author">Meredith Broussard</div>
+              <div class="book-description">Unmasking bias in AI and data technology.</div>
+              <div class="arrow">→</div>
+            </div>
+          </a>
+          <a href="#" target="_blank" class="book-card">
+            <div class="image-wrapper"><img src="/covers/comingwave.jpg" class="book-cover" alt="Wave" /></div>
+            <div class="book-content">
+              <div class="book-category">2023 • FRONTIER</div>
+              <div class="book-name">The Coming Wave</div>
+              <div class="book-author">Mustafa Suleyman</div>
+              <div class="book-description">AI, power, and the dilemma of the 21st century.</div>
+              <div class="arrow">→</div>
+            </div>
+          </a>
+          <a href="#" target="_blank" class="book-card">
+            <div class="image-wrapper"><img src="/covers/24.webp" class="book-cover" alt="Prompt" /></div>
+            <div class="book-content">
+              <div class="book-category">2024 • AI</div>
+              <div class="book-name">The Art of Prompt Engineering</div>
+              <div class="book-author">Nathan Hunter</div>
+              <div class="book-description">Crafting precise inputs for 10x AI productivity.</div>
+              <div class="arrow">→</div>
+            </div>
+          </a>
+          <a href="#" target="_blank" class="book-card">
+            <div class="image-wrapper"><img src="/covers/20.jpg" class="book-cover" alt="Vol 1" /></div>
+            <div class="book-content">
+              <div class="book-category">2024 • AI FOUNDATIONS</div>
+              <div class="book-name">Understanding AI (Vol 1)</div>
+              <div class="book-author">J.F. Graley</div>
+              <div class="book-description">Actionable insights into artificial intelligence concepts.</div>
+              <div class="arrow">→</div>
+            </div>
+          </a>
+          <a href="#" target="_blank" class="book-card" style="border-color: var(--gh-gold)">
+            <div class="image-wrapper"><img src="/covers/vibecoding.jpg" class="book-cover" alt="Vibe" /></div>
+            <div class="book-content">
+              <div class="book-category">2024 • THE NEW NORM</div>
+              <div class="book-name">Vibe Coding</div>
+              <div class="book-author">Gene Kim & Steve Yegge</div>
+              <div class="book-description">Engineering in the age of LLM-assisted code generation.</div>
+              <div class="arrow">→</div>
+            </div>
+          </a>
+          <a href="#" target="_blank" class="book-card">
+            <div class="image-wrapper"><img src="/covers/MichaelMillerAI.jpg" class="book-cover" alt="Miller AI" /></div>
+            <div class="book-content">
+              <div class="book-category">2025 • BEGINNER AI</div>
+              <div class="book-name">AI Prompt Engineering Guide</div>
+              <div class="book-author">Michael Miller</div>
+              <div class="book-description">Foundational guide to prompts for ChatGPT, Gemini, and Claude.</div>
+              <div class="arrow">→</div>
+            </div>
+          </a>
+          <a href="#" target="_blank" class="book-card">
+            <div class="image-wrapper"><img src="/covers/21.jpg" class="book-cover" alt="Cloud" /></div>
+            <div class="book-content">
+              <div class="book-category">2025 • CLOUD</div>
+              <div class="book-name">Cloud Computing 2026 Guide</div>
+              <div class="book-author">Aulfia Geollogher</div>
+              <div class="book-description">Navigating the next cloud landscape for beginners.</div>
+              <div class="arrow">→</div>
+            </div>
+          </a>
+          <a href="#" target="_blank" class="book-card">
+            <div class="image-wrapper"><img src="/covers/23.jpg" class="book-cover" alt="Innovation" /></div>
+            <div class="book-content">
+              <div class="book-category">2026 • AI DESIGN</div>
+              <div class="book-name">Design Thinking with AI</div>
+              <div class="book-author">Dr. Scott Clark</div>
+              <div class="book-description">Amplify creativity through AI-human collaboration.</div>
+              <div class="arrow">→</div>
+            </div>
+          </a>
+        </div>
+      </div>
+
+      <!-- 06. BUSINESS & STARTUPS -->
+      <div class="section-group">
+        <h2 class="section-title">06. Business Strategy & Startup Logic</h2>
+        <div class="book-grid">
+          <a href="#" target="_blank" class="book-card">
+            <div class="image-wrapper"><img src="/covers/16.webp" class="book-cover" alt="MBA" /></div>
+            <div class="book-content">
+              <div class="book-category">2010 • FUNDAMENTALS</div>
+              <div class="book-name">The Personal MBA</div>
+              <div class="book-author">Josh Kaufman</div>
+              <div class="book-description">Frameworks for marketing, sales, and operations.</div>
+              <div class="arrow">→</div>
+            </div>
+          </a>
+          <a href="#" target="_blank" class="book-card">
+            <div class="image-wrapper"><img src="https://m.media-amazon.com/images/I/81-QB7nDh4L._AC_UF1000,1000_QL80_.jpg" class="book-cover" alt="Lean" /></div>
+            <div class="book-content">
+              <div class="book-category">2011 • AGILITY</div>
+              <div class="book-name">The Lean Startup</div>
+              <div class="book-author">Eric Ries</div>
+              <div class="book-description">Continuous innovation to build radical success.</div>
+              <div class="arrow">→</div>
+            </div>
+          </a>
+          <a href="#" target="_blank" class="book-card">
+            <div class="image-wrapper"><img src="/covers/momtest.jpg" class="book-cover" alt="Mom Test" /></div>
+            <div class="book-content">
+              <div class="book-category">2013 • VALIDATION</div>
+              <div class="book-name">The Mom Test</div>
+              <div class="book-author">Rob Fitzpatrick</div>
+              <div class="book-description">Talk to customers and learn if your business is a good idea.</div>
+              <div class="arrow">→</div>
+            </div>
+          </a>
+          <a href="#" target="_blank" class="book-card">
+            <div class="image-wrapper"><img src="https://m.media-amazon.com/images/I/71uAI28kJuL._AC_UF1000,1000_QL80_.jpg" class="book-cover" alt="Zero" /></div>
+            <div class="book-content">
+              <div class="book-category">2014 • STRATEGY</div>
+              <div class="book-name">Zero to One</div>
+              <div class="book-author">Peter Thiel</div>
+              <div class="book-description">Building the future by doing something entirely unique.</div>
+              <div class="arrow">→</div>
+            </div>
+          </a>
+          <a href="#" target="_blank" class="book-card">
+            <div class="image-wrapper"><img src="/covers/hardthing.jpg" class="book-cover" alt="Hard Thing" /></div>
+            <div class="book-content">
+              <div class="book-category">2014 • MANAGEMENT</div>
+              <div class="book-name">The Hard Thing About Hard Things</div>
+              <div class="book-author">Ben Horowitz</div>
+              <div class="book-description">Running a startup when there are no easy answers.</div>
+              <div class="arrow">→</div>
+            </div>
+          </a>
+          <a href="#" target="_blank" class="book-card">
+            <div class="image-wrapper"><img src="/covers/foundersmentality.jpg" class="book-cover" alt="Mentality" /></div>
+            <div class="book-content">
+              <div class="book-category">2016 • SCALE</div>
+              <div class="book-name">The Founder’s Mentality</div>
+              <div class="book-author">Zook & Allen</div>
+              <div class="book-description">How to overcome the predictable crises of growth.</div>
+              <div class="arrow">→</div>
+            </div>
+          </a>
+        </div>
+      </div>
+
+      <!-- 07. WEALTH & FINANCE -->
+      <div class="section-group">
+        <h2 class="section-title">07. Wealth & Behavioral Finance</h2>
+        <div class="book-grid">
+          <a href="#" target="_blank" class="book-card">
+            <div class="image-wrapper"><img src="/covers/30.webp" class="book-cover" alt="Millionaire" /></div>
+            <div class="book-content">
+              <div class="book-category">2005 • MINDSET</div>
+              <div class="book-name">Secrets of the Millionaire Mind</div>
+              <div class="book-author">T. Harv Eker</div>
+              <div class="book-description">Mastering the inner game of wealth.</div>
+              <div class="arrow">→</div>
+            </div>
+          </a>
+          <a href="#" target="_blank" class="book-card">
+            <div class="image-wrapper"><img src="/covers/8.fH+Lp6S9L.jpg" class="book-cover" alt="Money" /></div>
+            <div class="book-content">
+              <div class="book-category">2020 • PSYCHOLOGY</div>
+              <div class="book-name">The Psychology of Money</div>
+              <div class="book-author">Morgan Housel</div>
+              <div class="book-description">How behavior dictates money outcomes.</div>
+              <div class="arrow">→</div>
+            </div>
+          </a>
+          <a href="#" target="_blank" class="book-card">
+            <div class="image-wrapper"><img src="/covers/28.jpg" class="book-cover" alt="Billionaire" /></div>
+            <div class="book-content">
+              <div class="book-category">2020 • WEALTH</div>
+              <div class="book-name">Think Like a Billionaire</div>
+              <div class="book-author">Scot Anderson</div>
+              <div class="book-description">Reprogramming the mind for abundance.</div>
+              <div class="arrow">→</div>
+            </div>
+          </a>
+          <a href="#" target="_blank" class="book-card">
+            <div class="image-wrapper"><img src="/covers/forexbasics.jpg" class="book-cover" alt="Forex" /></div>
+            <div class="book-content">
+              <div class="book-category">2020 • TRADING</div>
+              <div class="book-name">Forex Trading: The Basics</div>
+              <div class="book-author">Simple Terms Guide</div>
+              <div class="book-description">Understanding the world's largest financial market.</div>
+              <div class="arrow">→</div>
+            </div>
+          </a>
+          <a href="#" target="_blank" class="book-card">
+            <div class="image-wrapper"><img src="/covers/31.jpg" class="book-cover" alt="Only" /></div>
+            <div class="book-content">
+              <div class="book-category">2024 • INVESTING</div>
+              <div class="book-name">The Only Investment Guide...</div>
+              <div class="book-author">Andrew Tobias</div>
+              <div class="book-description">Updated for modern digital assets and crypto.</div>
+              <div class="arrow">→</div>
+            </div>
+          </a>
+        </div>
+      </div>
+
+      <!-- BIBLIOGRAPHY & SOURCES -->
+      <section class="bibliography">
+        <h2 class="section-title">Bibliography & Sources</h2>
+        <div class="bib-content">
+          <p>Aig-Imoukhuede, A. (2021). <em>Leaving the Tarmac: Buying a Bank in Africa</em>. [Source: Wikipedia/Amazon]</p>
+          <p>Anderson, S. (2020). <em>Think Like a Billionaire</em>. [Source: Goodreads]</p>
+          <p>Barker, J. (2020). <em>Confident Cyber Security</em>. [Source: Amazon]</p>
+          <p>Brautigam, D. (2011). <em>The Dragon’s Gift</em>. [Source: Wikipedia]</p>
+          <p>Broussard, M. (2023). <em>More Than a Glitch</em>. [Source: MIT Press/Medium]</p>
+          <p>Clark, S. (2026). <em>Design Thinking with AI</em>. [Source: Goodreads]</p>
+          <p>Corcoran, B. (2011). <em>Shark Tales</em>. [Source: Amazon]</p>
+          <p>Fitzpatrick, R. (2013). <em>The Mom Test</em>. [Source: Medium]</p>
+          <p>Frimpong, E. (2024). <em>The Shoemakergurl</em>. [Source: Edna Frimpong Official]</p>
+          <p>Horowitz, B. (2014). <em>The Hard Thing About Hard Things</em>. [Source: Wikipedia]</p>
+          <p>Housel, M. (2020). <em>The Psychology of Money</em>. [Source: Harriman House]</p>
+          <p>Isaacson, W. (2014/2023). <em>Innovators / Elon Musk</em>. [Source: Wikipedia]</p>
+          <p>Kim, G. & Yegge, S. (2024). <em>Vibe Coding</em>. [Source: IT Revolution]</p>
+          <p>Knight, P. (2016). <em>Shoe Dog</em>. [Source: Amazon]</p>
+          <p>Leke, A. et al. (2018). <em>Africa's Business Revolution</em>. [Source: McKinsey]</p>
+          <p>Maritz, J. (2018). <em>How We Made It in Africa</em>. [Source: Maritz Africa]</p>
+          <p>McDowell, G. L. (2015). <em>Cracking the Coding Interview</em>. [Source: Amazon]</p>
+          <p>Miller, M. (2025). <em>AI Prompt Engineering Guide</em>. [Source: Amazon]</p>
+          <p>Ovia, J. (2017). <em>Africa Rise And Shine</em>. [Source: JIM OVIA Official]</p>
+          <p>Signé, L. (2020). <em>Unlocking Africa’s Business Potential</em>. [Source: Brookings]</p>
+          <p>Suleyman, M. (2023). <em>The Coming Wave</em>. [Source: Wikipedia]</p>
+          <p>Zook, C. (2016). <em>The Founder’s Mentality</em>. [Source: HBR]</p>
+        </div>
+      </section>
+
+      <footer>
+        <a href="https://www.linkedin.com/in/danitalamptey" target="_blank" class="footer-link">Recommended by Danita Lamptey </a>
+      </footer>
+    </div>
+  </body>
+</html>
